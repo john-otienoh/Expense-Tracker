@@ -58,7 +58,7 @@ You can implement the application using any programming language of your choice.
 </br>
 This project idea is a great way to practice your logic building skills and learn how to interact with the filesystem using a CLI application. It will also help you understand how to manage data and provide useful information to users in a structured way.
 </br>
-[Number Guessing game link](https://roadmap.sh/projects/expense-tracker)
+[Number Guessing game link]("https://roadmap.sh/projects/expense-tracker")
 </br>
-[My solution submision link](https://roadmap.sh/projects/number-guessing-game/solutions?u=6724c2b131d65c35d088343)</br>
+[My solution submision link]("https://roadmap.sh/projects/expense-tracker/solutions?u=6724c2b131d65c235d088343)</br>
 Happy coding!
