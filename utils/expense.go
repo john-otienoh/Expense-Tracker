@@ -49,17 +49,23 @@ func AddExpenses(expenses []Expense, description, category string, amount float6
 	return expenses, expense
 }
 
-func UpdateExpenses(expenses []Expense, id int, newDescription, newCategory string, newAmount float64) ([]Expense, error) {
-	for i := range expenses {
-		if expenses[i].ID == id {
-			expenses[i].Description = newDescription
-			expenses[i].Category = newCategory
-			expenses[i].Amount = newAmount
+func UpdateExpenses(expenses []Expense, id int, newDescription, newCategory string, newAmount float64) ([]Expense, bool) {
+	for i, e := range expenses {
+		if e.ID == id {
+			if newDescription != "" {
+				expenses[i].Description = newDescription
+			}
+			if newAmount >= 0 {
+				expenses[i].Amount = newAmount
+			}
+			if newCategory != "" {
+				expenses[i].Category = newCategory
+			}
 			expenses[i].Date = FormatDate()
-			return expenses, nil
+			return expenses, true
 		}
 	}
-	return expenses, fmt.Errorf("expense with ID %d not found", id)
+	return expenses, false
 }
 
 func DeleteExpenses(expenses []Expense, id int) ([]Expense, error) {
@@ -83,4 +89,35 @@ func ListExpenses(expenses []Expense) {
 		)
 
 	}
+	w.Flush()
+}
+
+func Summary(expenses []Expense, month int) {
+	if len(expenses) == 0 {
+		fmt.Println("No expenses found.")
+		return
+	}
+	now := time.Now()
+	currentYear := now.Year()
+	var totalExpenses float64
+
+	if month == 0 {
+		for _, expense := range expenses {
+			totalExpenses += expense.Amount
+		}
+		fmt.Printf("Total expenses: $%.2f\n", totalExpenses)
+	} else {
+		for _, e := range expenses {
+			parsed, err := time.Parse("02.01.2006", e.Date)
+			if err != nil {
+				fmt.Println("Error parsing date:", err)
+				return
+			}
+			if parsed.Month() == time.Month(month) && parsed.Year() == currentYear {
+				totalExpenses += e.Amount
+			}
+		}
+		fmt.Printf("Total expenses for %s: $%.2f\n", time.Month(month), totalExpenses)
+	}
+
 }
